@@ -10,7 +10,7 @@ type Config = {|
 |};
 
 const config: Config = {
-    API_URL: 'https://api.mapbox.com',
+    API_URL: 'https://tiles.vietmaps.vn',
     get EVENTS_URL() {
         if (!this.API_URL) { return null; }
         if (this.API_URL.indexOf('https://api.mapbox.cn') === 0) {
