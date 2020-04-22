@@ -160,7 +160,7 @@
     "prepublishOnly": "run-s build-flow-types build-dev build-prod-min build-prod build-csp build-css build-style-spec test-build diff-tarball",
     "print-release-url": "node build/print-release-url.js",
     "codegen": "build/run-node build/generate-style-code.js && build/run-node build/generate-struct-arrays.js",
-    "build-test": "run-s build-flow-types build-dev build-prod-min build-prod build-csp build-style-spec diff-tarball"
+    "build-test": "run-s build-flow-types build-prod-min build-prod"
   },
   "files": [
     "build/",
