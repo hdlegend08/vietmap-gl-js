@@ -13,15 +13,15 @@
  * and the Mapbox Terms of Service are available at https://www.mapbox.com/tos/
  ******************************************************************************/
 
-import {version as sdkVersion} from '../../package.json'
-import type {Cancelable} from '../types/cancelable'
-import type {TileJSON} from '../types/tilejson'
-import config from './config'
+import {version as sdkVersion} from '../../package.json';
+import type {Cancelable} from '../types/cancelable';
+import type {TileJSON} from '../types/tilejson';
+import config from './config';
 
-import browser from './browser'
-import window from './window'
-import webpSupported from './webp_supported'
-import {createSkuToken, SKU_ID} from './sku_token'
+import browser from './browser';
+import window from './window';
+import webpSupported from './webp_supported';
+import {createSkuToken, SKU_ID} from './sku_token';
 import {
     uuid,
     validateUuid,
@@ -49,10 +49,10 @@ type UrlObject = {|
 |}
 
 export class RequestManager {
-    _skuToken: string
-    _skuTokenExpiresAt: number
-    _transformRequestFn: ?RequestTransformFunction
-    _customAccessToken: ?string
+    _skuToken: string;
+    _skuTokenExpiresAt: number;
+    _transformRequestFn: ?RequestTransformFunction;
+    _customAccessToken: ?string;
 
     constructor(
         transformRequestFn?: RequestTransformFunction,
@@ -75,6 +75,7 @@ export class RequestManager {
 
     transformRequest(url: string, type: ResourceTypeEnum) {
         if (this._transformRequestFn) {
+            console.log('_transformRequestFn',this._transformRequestFn)
             return this._transformRequestFn(url, type) || {url};
         }
 
@@ -92,7 +93,6 @@ export class RequestManager {
     }
 
     normalizeGlyphsURL(url: string, accessToken?: string): string {
-        console.log('glyphsUrl')
         if (!isMapboxURL(url)) return url;
         const urlObject = parseUrl(url);
         urlObject.path = `/fonts/v1${urlObject.path}`;
@@ -103,7 +103,6 @@ export class RequestManager {
     }
 
     normalizeSourceURL(url: string, accessToken?: string): string {
-        console.log('sourceurl', url)
         if (!isMapboxURL(url)) return url;
         const urlObject = parseUrl(url);
         urlObject.path = `/v4/${urlObject.authority}.json`;
@@ -122,7 +121,6 @@ export class RequestManager {
         extension: string,
         accessToken?: string
     ): string {
-        console.log('spriteURL')
         const urlObject = parseUrl(url);
         if (!isMapboxURL(url)) {
             urlObject.path += `${format}${extension}`;
@@ -139,7 +137,6 @@ export class RequestManager {
         if (this._isSkuTokenExpired()) {
             this._createSkuToken();
         }
-
         if (tileURL && !isMapboxURL(tileURL)) return tileURL;
         const urlObject = parseUrl(tileURL);
         const imageExtensionRe = /(\.(png|jpg)\d*)(?=$)/;
@@ -215,7 +212,6 @@ export class RequestManager {
     ): string {
         const help =
             'See https://www.mapbox.com/api-documentation/#access-tokens-and-token-scopes';
-        console.log('make-api', urlObject)
         const apiUrlObject = parseUrl(config.API_URL);
         urlObject.protocol = apiUrlObject.protocol;
         urlObject.authority = apiUrlObject.authority;
@@ -275,7 +271,7 @@ function parseUrl(url: string): UrlObject {
     if (!parts) {
         throw new Error('Unable to parse URL object');
     }
-    console.log('parseUrl', parts)
+    console.log('parseUrl', parts);
 
     return {
         protocol: parts[1],
@@ -315,12 +311,12 @@ function parseAccessToken(accessToken: ?string) {
 type TelemetryEventType = 'appUserTurnstile' | 'map.load'
 
 class TelemetryEvent {
-    eventData: any
-    anonId: ?string
-    queue: Array<any>
-    type: TelemetryEventType
-    pendingRequest: ?Cancelable
-    _customAccessToken: ?string
+    eventData: any;
+    anonId: ?string;
+    queue: Array<any>;
+    type: TelemetryEventType;
+    pendingRequest: ?Cancelable;
+    _customAccessToken: ?string;
 
     constructor(type: TelemetryEventType) {
         this.type = type;
@@ -441,8 +437,8 @@ class TelemetryEvent {
 }
 
 export class MapLoadEvent extends TelemetryEvent {
-    +success: { [_: number]: boolean }
-    skuToken: string
+    +success: { [_: number]: boolean };
+    skuToken: string;
 
     constructor() {
         super('map.load');
