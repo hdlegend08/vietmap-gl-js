@@ -42,7 +42,7 @@ import {validateCustomStyleLayer} from './style_layer/custom_style_layer';
 // We're skipping validation errors with the `source.canvas` identifier in order
 // to continue to allow canvas sources to be added at runtime/updated in
 // smart setStyle (see https://github.com/mapbox/mapbox-gl-js/pull/6424):
-const emitValidationErrors = (evented: Evented, errors: ?$ReadOnlyArray<{message: string, identifier?: string}>) =>
+const emitValidationErrors = (evented: Evented, errors: ?$ReadOnlyArray<{ message: string, identifier?: string }>) =>
     _emitValidationErrors(evented, errors && errors.filter(error => error.identifier !== 'source.canvas'));
 
 import type Map from '../ui/map';
@@ -99,6 +99,7 @@ export type StyleOptions = {
 export type StyleSetterOptions = {
     validate?: boolean
 };
+
 /**
  * @private
  */
@@ -113,19 +114,19 @@ class Style extends Evented {
 
     _request: ?Cancelable;
     _spriteRequest: ?Cancelable;
-    _layers: {[_: string]: StyleLayer};
-    _serializedLayers: {[_: string]: Object};
+    _layers: { [_: string]: StyleLayer };
+    _serializedLayers: { [_: string]: Object };
     _order: Array<string>;
-    sourceCaches: {[_: string]: SourceCache};
+    sourceCaches: { [_: string]: SourceCache };
     zoomHistory: ZoomHistory;
     _loaded: boolean;
     _rtlTextPluginCallback: Function;
     _changed: boolean;
-    _updatedSources: {[_: string]: 'clear' | 'reload'};
-    _updatedLayers: {[_: string]: true};
-    _removedLayers: {[_: string]: StyleLayer};
-    _changedImages: {[_: string]: true};
-    _updatedPaintProps: {[layer: string]: true};
+    _updatedSources: { [_: string]: 'clear' | 'reload' };
+    _updatedLayers: { [_: string]: true };
+    _removedLayers: { [_: string]: StyleLayer };
+    _changedImages: { [_: string]: true };
+    _updatedPaintProps: { [layer: string]: true };
     _layerOrderChanged: boolean;
     _availableImages: Array<string>;
 
@@ -152,7 +153,7 @@ class Style extends Evented {
 
         this._layers = {};
         this._serializedLayers = {};
-        this._order  = [];
+        this._order = [];
         this.sourceCaches = {};
         this.zoomHistory = new ZoomHistory();
         this._loaded = false;
@@ -595,7 +596,7 @@ class Style extends Evented {
         const sourceCache = this.sourceCaches[id];
         delete this.sourceCaches[id];
         delete this._updatedSources[id];
-        sourceCache.fire(new Event('data', {sourceDataType: 'metadata', dataType:'source', sourceId: id}));
+        sourceCache.fire(new Event('data', {sourceDataType: 'metadata', dataType: 'source', sourceId: id}));
         sourceCache.setEventedParent(null);
         sourceCache.clearTiles();
 
@@ -604,10 +605,10 @@ class Style extends Evented {
     }
 
     /**
-    * Set the data of a GeoJSON source, given its id.
-    * @param {string} id id of the source
-    * @param {GeoJSON|string} data GeoJSON source
-    */
+     * Set the data of a GeoJSON source, given its id.
+     * @param {string} id id of the source
+     * @param {GeoJSON|string} data GeoJSON source
+     */
     setGeoJSONSourceData(id: string, data: GeoJSON | string) {
         this._checkLoaded();
 
@@ -814,7 +815,7 @@ class Style extends Evented {
         this._updateLayer(layer);
     }
 
-    setFilter(layerId: string, filter: ?FilterSpecification,  options: StyleSetterOptions = {}) {
+    setFilter(layerId: string, filter: ?FilterSpecification, options: StyleSetterOptions = {}) {
         this._checkLoaded();
 
         const layer = this.getLayer(layerId);
@@ -850,7 +851,7 @@ class Style extends Evented {
         return clone(this.getLayer(layer).filter);
     }
 
-    setLayoutProperty(layerId: string, name: string, value: any,  options: StyleSetterOptions = {}) {
+    setLayoutProperty(layerId: string, name: string, value: any, options: StyleSetterOptions = {}) {
         this._checkLoaded();
 
         const layer = this.getLayer(layerId);
@@ -998,7 +999,9 @@ class Style extends Evented {
             transition: this.stylesheet.transition,
             sources: mapObject(this.sourceCaches, (source) => source.serialize()),
             layers: this._serializeLayers(this._order)
-        }, (value) => { return value !== undefined; });
+        }, (value) => {
+            return value !== undefined;
+        });
     }
 
     _updateLayer(layer: StyleLayer) {
@@ -1137,7 +1140,7 @@ class Style extends Evented {
         return this._flattenAndSortRenderedFeatures(sourceResults);
     }
 
-    querySourceFeatures(sourceID: string, params: ?{sourceLayer: ?string, filter: ?Array<any>, validate?: boolean}) {
+    querySourceFeatures(sourceID: string, params: ?{ sourceLayer: ?string, filter: ?Array<any>, validate?: boolean }) {
         if (params && params.filter) {
             this._validate(validateStyle.filter, 'querySourceFeatures.filter', params.filter, null, params);
         }
@@ -1325,7 +1328,7 @@ class Style extends Evented {
 
     // Callbacks from web workers
 
-    getImages(mapId: string, params: {icons: Array<string>, source: string, tileID: OverscaledTileID, type: string}, callback: Callback<{[_: string]: StyleImage}>) {
+    getImages(mapId: string, params: { icons: Array<string>, source: string, tileID: OverscaledTileID, type: string }, callback: Callback<{ [_: string]: StyleImage }>) {
 
         this.imageManager.getImages(params.icons, callback);
 
@@ -1345,7 +1348,7 @@ class Style extends Evented {
         }
     }
 
-    getGlyphs(mapId: string, params: {stacks: {[_: string]: Array<number>}}, callback: Callback<{[_: string]: {[_: number]: ?StyleGlyph}}>) {
+    getGlyphs(mapId: string, params: { stacks: { [_: string]: Array<number> } }, callback: Callback<{ [_: string]: { [_: number]: ?StyleGlyph } }>) {
         this.glyphManager.getGlyphs(params.stacks, callback);
     }
 
