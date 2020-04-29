@@ -16,15 +16,15 @@ const config: Config = {
         if (!this.API_URL) {
             return null;
         }
-        if (this.API_URL.indexOf('https://api.mapbox.cn') === 0) {
-            return 'https://events.mapbox.cn/events/v2';
-        } else if (this.API_URL.indexOf('https://api.mapbox.com') === 0) {
-            return 'https://events.mapbox.com/events/v2';
+        if (this.API_URL.indexOf('https://api.vietmap.vn') === 0) {
+            return 'https://events.vietmap.vn/events/v2';
+        } else if (this.API_URL.indexOf('https://api.vietmap.com') === 0) {
+            return 'https://events.vietmap.com/events/v2';
         } else {
             return null;
         }
     },
-    FEEDBACK_URL: 'https://apps.mapbox.com/feedback',
+    FEEDBACK_URL: 'https://apps.vietmap.com/feedback',
     REQUIRE_ACCESS_TOKEN: true,
     ACCESS_TOKEN: null,
     MAX_PARALLEL_IMAGE_REQUESTS: 16
