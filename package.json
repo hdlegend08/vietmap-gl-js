@@ -1,5 +1,5 @@
 {
-  "name": "mapbox-gl-test",
+  "name": "vietmap-gl",
   "description": "A WebGL interactive maps library",
   "version": "1.0.0-dev",
   "main": "dist/mapbox-gl.js",
@@ -7,7 +7,7 @@
   "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mapbox/mapbox-gl-js.git"
+    "url": "git://github.com/hdlegend08/vietmap-gl-js"
   },
   "engines": {
     "node": ">=6.4.0"
