@@ -94,7 +94,7 @@ export class RequestManager {
     normalizeGlyphsURL(url: string, accessToken?: string): string {
         if (!isMapboxURL(url)) return url;
         const urlObject = parseUrl(url);
-        urlObject.path = `/fonts/v1${urlObject.path}`;
+        urlObject.path = `/fonts${urlObject.path}`;
         return this._makeAPIURL(
             urlObject,
             this._customAccessToken || accessToken
@@ -104,7 +104,7 @@ export class RequestManager {
     normalizeSourceURL(url: string, accessToken?: string): string {
         if (!isMapboxURL(url)) return url;
         const urlObject = parseUrl(url);
-        urlObject.path = `/v4/${urlObject.authority}.json`;
+        urlObject.path = `/${urlObject.authority}`;
         // TileJSON requests need a secure flag appended to their URLs so
         // that the server knows to send SSL-ified resource references.
         urlObject.params.push('secure');
@@ -125,7 +125,7 @@ export class RequestManager {
             urlObject.path += `${format}${extension}`;
             return formatUrl(urlObject);
         }
-        urlObject.path = `/styles/v1${urlObject.path}/sprite${format}${extension}`;
+        urlObject.path = `/styles${urlObject.path}/sprite${format}${extension}`;
         return this._makeAPIURL(
             urlObject,
             this._customAccessToken || accessToken
@@ -224,11 +224,11 @@ export class RequestManager {
         accessToken = accessToken || config.ACCESS_TOKEN;
         if (!accessToken)
             throw new Error(
-                `An API access token is required to use Mapbox GL. ${help}`
+                `An API access token is required to use Vietmap GL. ${help}`
             );
         if (accessToken[0] === 's')
             throw new Error(
-                `Use a public access token (pk.*) with Mapbox GL, not a secret access token (sk.*). ${help}`
+                `Use a public access token (pk.*) with Vietmap GL, not a secret access token (sk.*). ${help}`
             );
 
         urlObject.params = urlObject.params.filter(
@@ -240,10 +240,10 @@ export class RequestManager {
 }
 
 function isMapboxURL(url: string) {
-    return url.indexOf('mapbox:') === 0 || url.indexOf('vietmap:') === 0;
+    return url.indexOf('vietmap:') === 0;
 }
 
-const mapboxHTTPURLRe = /^((https?:)?\/\/)?([^\/]+\.)?mapbox\.c(n|om)(\/|\?|$)/i;
+const mapboxHTTPURLRe = /^((https?:)?\/\/)?([^\/]+\.)?vietmaps\.vn(\/|\?|$)/i;
 
 function isMapboxHTTPURL(url: string): boolean {
     return mapboxHTTPURLRe.test(url);

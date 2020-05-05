@@ -100,13 +100,20 @@ function makeFetchRequest(requestParameters: RequestParameters, callback: Respon
     });
     let complete = false;
     let aborted = false;
+    
+    const url = new URL(requestParameters.url)
+    const accessToken = url.searchParams.get('access_token')
+    
+    if(accessToken) {
+        request.headers.set('Authorization', `Bearer ${accessToken}`);
+    }
 
     const cacheIgnoringSearch = hasCacheDefeatingSku(request.url);
 
     if (requestParameters.type === 'json') {
         request.headers.set('Accept', 'application/json');
     }
-
+    
     const validateOrFetch = (err, cachedResponse, responseIsFresh) => {
         if (aborted) return;
 

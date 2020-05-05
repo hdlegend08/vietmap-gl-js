@@ -11,7 +11,6 @@ type Config = {|
 
 const config: Config = {
     API_URL: 'https://tiles.vietmaps.vn',
-    // API_URL: 'https://api.mapbox.com',
     get EVENTS_URL() {
         if (!this.API_URL) {
             return null;
