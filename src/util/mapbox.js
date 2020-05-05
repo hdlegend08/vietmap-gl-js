@@ -75,7 +75,6 @@ export class RequestManager {
 
     transformRequest(url: string, type: ResourceTypeEnum) {
         if (this._transformRequestFn) {
-            console.log('_transformRequestFn',this._transformRequestFn)
             return this._transformRequestFn(url, type) || {url};
         }
 
@@ -271,7 +270,6 @@ function parseUrl(url: string): UrlObject {
     if (!parts) {
         throw new Error('Unable to parse URL object');
     }
-    console.log('parseUrl', parts);
 
     return {
         protocol: parts[1],
