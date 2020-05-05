@@ -139,7 +139,7 @@ export class RequestManager {
         if (tileURL && !isMapboxURL(tileURL)) return tileURL;
         const urlObject = parseUrl(tileURL);
         const imageExtensionRe = /(\.(png|jpg)\d*)(?=$)/;
-        const tileURLAPIPrefixRe = /^.+\/v4\//;
+        const tileURLAPIPrefixRe = /^.+\/v1\//;
 
         // The v4 mapbox tile API supports 512x512 image tiles only when @2x
         // is appended to the tile URL. If `tileSize: 512` is specified for
@@ -152,7 +152,7 @@ export class RequestManager {
             `${suffix}${extension}`
         );
         urlObject.path = urlObject.path.replace(tileURLAPIPrefixRe, '/');
-        urlObject.path = `/v4${urlObject.path}`;
+        urlObject.path = `/v1${urlObject.path}`;
 
         const accessToken =
             this._customAccessToken ||
@@ -166,6 +166,7 @@ export class RequestManager {
     }
 
     canonicalizeTileURL(url: string, removeAccessToken: boolean) {
+        console.log('canonicalizeTileURL', url)
         const version = '/v4/';
         // matches any file extension specified by a dot and one or more alphanumeric characters
         const extensionRe = /\.[\w]+$/;
@@ -193,6 +194,7 @@ export class RequestManager {
     }
 
     canonicalizeTileset(tileJSON: TileJSON, sourceURL?: string) {
+        console.log('canonicalizeTileset', tileJSON)
         const removeAccessToken = sourceURL ? isMapboxURL(sourceURL) : false;
         const canonical = [];
         for (const url of tileJSON.tiles || []) {
